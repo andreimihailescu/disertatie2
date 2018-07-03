@@ -46,9 +46,9 @@ class PersonController extends Controller
 
         $person->firstname = $request->firstname;
         $person->lastname = $request->lastname;
-        $person->age = $request->age;
+        $person->email = $request->email;
         $person->sex = $request->sex;
-        $person->birthdate = new DateTime($request->birthdate);
+        $person->birthdate = date($request->birthdate);
         $person->hobby = $request->hobby;
 
         $person->save();
@@ -75,7 +75,13 @@ class PersonController extends Controller
      */
     public function edit($id)
     {
-        //
+        $person = Person::findOrFail($id);
+
+        dd($person);
+
+        return view('person.form', [
+            'person' => $person
+        ]);
     }
 
     /**
@@ -98,6 +104,10 @@ class PersonController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $person = Person::findOrFail($id);
+
+        $person->delete();
+
+        return redirect('person');
     }
 }
