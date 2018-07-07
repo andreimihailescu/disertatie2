@@ -6,9 +6,15 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Create person</div>
-
                     <div class="card-body">
-                        <form method="POST" action="{{ route('person.store') }}" aria-label="Create person">
+
+                        @if(isset($person->id))
+                            <form method="POST" action="{{ route('person.update', ['person' => $person->id]) }}" aria-label="Create person">
+                                <input type="hidden" name="_method" value="PUT" />
+                            @else
+                            <form method="POST" action="{{ route('person.store') }}" aria-label="Create person">
+                        @endif
+
                             @csrf
 
                             <div class="form-group row">
@@ -18,7 +24,7 @@
                                 <div class="col-md-6">
                                     <input id="firstname" type="text"
                                            class="form-control{{ $errors->has('firstname') ? ' is-invalid' : '' }}"
-                                           name="firstname" value="{{ old('firstname') }}" required autofocus>
+                                           name="firstname" value="{{ isset($person->firstname) ? $person->firstname : old('firstname') }}" required autofocus>
 
                                     @if ($errors->has('firstname'))
                                         <span class="invalid-feedback" role="alert">
@@ -35,7 +41,7 @@
                                 <div class="col-md-6">
                                     <input id="lastname" type="text"
                                            class="form-control{{ $errors->has('lastname') ? ' is-invalid' : '' }}"
-                                           name="lastname" value="{{ old('lastname') }}" required>
+                                           name="lastname" value="{{ isset($person->lastname) ? $person->lastname : old('lastname') }}" required>
 
                                     @if ($errors->has('lastname'))
                                         <span class="invalid-feedback" role="alert">
@@ -52,7 +58,7 @@
                                 <div class="col-md-6">
                                     <input id="email" type="email"
                                            class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"
-                                           name="email">
+                                           name="email" value="{{ isset($person->email) ? $person->email : old('email')}}">
 
                                     @if ($errors->has('email'))
                                         <span class="invalid-feedback" role="alert">
@@ -71,8 +77,8 @@
                                             class="form-control{{ $errors->has('age') ? ' is-invalid' : '' }}"
                                             name="sex">
                                         <option value="">Please select</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
+                                        <option value="Male" {{  isset($person->sex) && $person->sex === 'Male' ? 'selected' : '' }}>Male</option>
+                                        <option value="Female" {{ isset($person->sex) &&$person->sex === 'Female' ? 'selected' : '' }}>Female</option>
                                     </select>
 
                                     @if ($errors->has('sex'))
@@ -90,7 +96,7 @@
                                 <div class="col-md-6">
                                     <input id="birthdate" type="text"
                                            class="form-control{{ $errors->has('birthdate') ? ' is-invalid' : '' }}"
-                                           name="birthdate" placeholder="2000-01-01">
+                                           name="birthdate" placeholder="2000-01-01" value="{{ isset($person->birthdate) ? $person->birthdate : old('birthdate') }}">
 
                                     @if ($errors->has('birthdate'))
                                         <span class="invalid-feedback" role="alert">
@@ -107,7 +113,7 @@
                                 <div class="col-md-6">
                                     <textarea id="hobby"
                                               class="form-control{{ $errors->has('hobby') ? ' is-invalid' : '' }}"
-                                              name="hobby"></textarea>
+                                              name="hobby">{{ isset($person->hobby) ? $person->hobby : old('hobby') }}</textarea>
 
                                     @if ($errors->has('hobby'))
                                         <span class="invalid-feedback" role="alert">

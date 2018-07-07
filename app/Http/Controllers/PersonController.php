@@ -77,8 +77,6 @@ class PersonController extends Controller
     {
         $person = Person::findOrFail($id);
 
-        dd($person);
-
         return view('person.form', [
             'person' => $person
         ]);
@@ -93,7 +91,7 @@ class PersonController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        dd($id);
     }
 
     /**
